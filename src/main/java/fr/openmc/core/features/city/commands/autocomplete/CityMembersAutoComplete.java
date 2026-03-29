@@ -16,10 +16,11 @@ public class CityMembersAutoComplete implements SuggestionProvider<BukkitCommand
 
     @Override
     public @NotNull List<String> getSuggestions(@NotNull ExecutionContext<BukkitCommandActor> context) {
-        UUID playerCityUUID = playerCities.get(context.actor().requirePlayer().getUniqueId()).getUniqueId();
-
-        if (playerCityUUID == null)
+        var playerCity = playerCities.get(context.actor().requirePlayer().getUniqueId());
+        if (playerCity == null) {
             return List.of();
+        }
+        UUID playerCityUUID = playerCity.getUniqueId();
 
         return playerCities.keySet().stream()
                 .filter(uuid -> playerCities.get(uuid).getUniqueId().equals(playerCityUUID))
