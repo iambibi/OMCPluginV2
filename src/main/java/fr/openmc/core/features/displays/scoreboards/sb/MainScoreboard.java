@@ -96,9 +96,9 @@ public class MainScoreboard extends BaseScoreboard {
     }
 
     public static List<Component> getDefaultLines(Player player, boolean inWar) {
-        Component rank = LuckPermsHook.isEnable()
-                ? Component.text(LuckPermsHook.getFormattedPAPIPrefix(player))
-                : TranslationManager.translation("feature.displays.scoreboard.rank.none", true).color(TextColor.color(0xFF1FCC));
+        String rank = LuckPermsHook.isEnable()
+                ? LuckPermsHook.getFormattedPAPIPrefix(player)
+                : null;
 
 
         City city = CityManager.getPlayerCity(player.getUniqueId());
@@ -118,11 +118,13 @@ public class MainScoreboard extends BaseScoreboard {
         lines.add(MiniMessage.miniMessage().deserialize(
                 "<gradient:#FF45B9:#FF1FCC><font:omc_fonts:small_caps>%s</font></gradient>".formatted(
                         player.getName())).decoration(TextDecoration.BOLD, true));
-        lines.add(text("  " + CharRemplacementUtils.getPointChar(player) + " ", NamedTextColor.DARK_GRAY)
-                .append(TranslationManager.translation(player, "feature.displays.scoreboard.rank.label", true).color(NamedTextColor.GRAY))
-                .appendSpace()
-                .append(rank)
-        );
+        if (rank != null) {
+            lines.add(text("  " + CharRemplacementUtils.getPointChar(player) + " ", NamedTextColor.DARK_GRAY)
+                    .append(TranslationManager.translation(player, "feature.displays.scoreboard.rank.label", true).color(NamedTextColor.GRAY))
+                    .appendSpace()
+                    .append(Component.text(rank))
+            );
+        }
         lines.add(text("  " + CharRemplacementUtils.getPointChar(player) + " ", NamedTextColor.DARK_GRAY)
                 .append(TranslationManager.translation(player, "feature.displays.scoreboard.city.label", true).color(NamedTextColor.GRAY))
                 .appendSpace()
